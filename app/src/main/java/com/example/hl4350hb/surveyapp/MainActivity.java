@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     TextView mQuestionLabel;
     Button mYesButton;
     Button mNoButton;
+    Button mNewButton;
 //    Button mResetButton;
 //    TextView mYesLabel;
 //    TextView mNoLabel;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private static final int RESULT_REQUEST_CODE = 0;
+    private static final int SURVEY_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         mQuestionLabel = (TextView) findViewById(R.id.survey_questions);
         mYesButton = (Button) findViewById(R.id.yes_button);
         mNoButton = (Button) findViewById(R.id.no_button);
+        mNewButton = (Button) findViewById(R.id.create_button);
+
 //        mResetButton = (Button) findViewById(R.id.reset_button);
 //        mYesLabel = (TextView) findViewById(R.id.yes_textview);
 //        mNoLabel = (TextView) findViewById(R.id.no_textview);
@@ -86,6 +90,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        mNewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent launchSurvey = new Intent(MainActivity.this, SurveyActivity.class);
+                startActivityForResult(launchSurvey, SURVEY_REQUEST_CODE);
+            }
+        });
+
         // Reset button event listener.
 //        mResetButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -113,13 +125,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RESULT_REQUEST_CODE && resultCode == RESULT_OK) {
-            boolean decision = data.getBooleanExtra(ResultsActivity.EXTRA_FROM_RESULT, false);
-            if (decision) {
-                // TODO maybe do something?
-            } else {
-                yesCount = 0;
-                noCount = 0;
+        if (resultCode == RESULT_OK) {
+            if (requestCode == RESULT_REQUEST_CODE) {
+                boolean decision = data.getBooleanExtra(ResultsActivity.EXTRA_FROM_RESULT, false);
+                if (decision) {
+                    // TODO maybe do something?
+                } else {
+                    resetCounts();
+                }
+            } else if (requestCode == SURVEY_REQUEST_CODE) {
+                String question = data.getStringExtra(SurveyActivity.EXTRA_FROM_SURVEY_QUESTION);
+                String opt1 = data.getStringExtra(SurveyActivity.EXTRA_FROM_SURVEY_OPT1);
+                String opt2 = data.getStringExtra(SurveyActivity.EXTRA_FROM_SURVEY_OPT2);
+                mQuestionLabel.setText(question);
+                mYesButton.setText(opt1);
+                mNoButton.setText(opt2);
             }
         }
     }
@@ -129,5 +149,10 @@ public class MainActivity extends AppCompatActivity {
         launchResults.putExtra(YES_KEY, yesCount);
         launchResults.putExtra(NO_KEY, noCount);
         startActivityForResult(launchResults, RESULT_REQUEST_CODE);
+    }
+
+    private void resetCounts() {
+        yesCount = 0;
+        noCount = 0;
     }
 }
