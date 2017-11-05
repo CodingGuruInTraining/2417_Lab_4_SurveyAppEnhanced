@@ -15,9 +15,9 @@ public class MainActivity extends AppCompatActivity {
     TextView mQuestionLabel;
     Button mYesButton;
     Button mNoButton;
-    Button mResetButton;
-    TextView mYesLabel;
-    TextView mNoLabel;
+//    Button mResetButton;
+//    TextView mYesLabel;
+//    TextView mNoLabel;
 
     // Initialize static variables.
     Integer yesCount;
@@ -26,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
     // Creates static keys for bundling.
     protected final static String YES_KEY = "yes something";
     protected final static String NO_KEY = "no key goes here";
+
+
+    private static final int RESULT_REQUEST_CODE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +52,12 @@ public class MainActivity extends AppCompatActivity {
         mQuestionLabel = (TextView) findViewById(R.id.survey_questions);
         mYesButton = (Button) findViewById(R.id.yes_button);
         mNoButton = (Button) findViewById(R.id.no_button);
-        mResetButton = (Button) findViewById(R.id.reset_button);
-        mYesLabel = (TextView) findViewById(R.id.yes_textview);
-        mNoLabel = (TextView) findViewById(R.id.no_textview);
+//        mResetButton = (Button) findViewById(R.id.reset_button);
+//        mYesLabel = (TextView) findViewById(R.id.yes_textview);
+//        mNoLabel = (TextView) findViewById(R.id.no_textview);
 
-        // Runs update function.
-        updateCounters();
+//        // Runs update function.
+//        updateCounters();
 
         // Yes button event listener.
         mYesButton.setOnClickListener(new View.OnClickListener() {
@@ -62,12 +65,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Updates counter.
                 yesCount++;
-                updateCounters();
+//                updateCounters();
 
-                Intent launchResults = new Intent(MainActivity.this, ResultsActivity.class);
-                launchResults.putExtra(YES_KEY, yesCount);
-                launchResults.putExtra(NO_KEY, noCount);
-                startActivity(launchResults);
+                sendIntent();
+//                Intent launchResults = new Intent(MainActivity.this, ResultsActivity.class);
+//                launchResults.putExtra(YES_KEY, yesCount);
+//                launchResults.putExtra(NO_KEY, noCount);
+//                startActivity(launchResults);
             }
         });
 
@@ -77,32 +81,53 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Updates counter.
                 noCount++;
-                updateCounters();
+//                updateCounters();
+                sendIntent();
             }
         });
 
         // Reset button event listener.
-        mResetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Clears variables and updates widget strings.
-                yesCount = 0;
-                noCount = 0;
-                updateCounters();
-            }
-        });
+//        mResetButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Clears variables and updates widget strings.
+//                yesCount = 0;
+//                noCount = 0;
+//                updateCounters();
+//            }
+//        });
     }
 
     // Function to set widget labels' text to counter values.
-    private void updateCounters() {
-        mYesLabel.setText("Yes: " + yesCount);
-        mNoLabel.setText("No: " + noCount);
-    }
+//    private void updateCounters() {
+//        mYesLabel.setText("Yes: " + yesCount);
+//        mNoLabel.setText("No: " + noCount);
+//    }
 
     // Bundle saver.
     @Override
     protected void onSaveInstanceState(Bundle outBundle) {
         outBundle.putInt(YES_KEY, yesCount);
         outBundle.putInt(NO_KEY, noCount);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RESULT_REQUEST_CODE && resultCode == RESULT_OK) {
+            boolean decision = data.getBooleanExtra(ResultsActivity.EXTRA_FROM_RESULT, false);
+            if (decision) {
+                // TODO maybe do something?
+            } else {
+                yesCount = 0;
+                noCount = 0;
+            }
+        }
+    }
+
+    private void sendIntent() {
+        Intent launchResults = new Intent(MainActivity.this, ResultsActivity.class);
+        launchResults.putExtra(YES_KEY, yesCount);
+        launchResults.putExtra(NO_KEY, noCount);
+        startActivityForResult(launchResults, RESULT_REQUEST_CODE);
     }
 }
