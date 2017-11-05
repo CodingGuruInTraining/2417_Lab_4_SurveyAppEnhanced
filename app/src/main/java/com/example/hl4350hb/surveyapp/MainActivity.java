@@ -2,6 +2,7 @@
 //
 package com.example.hl4350hb.surveyapp;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -23,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
     Integer noCount;
 
     // Creates static keys for bundling.
-    private final static String YES_KEY = "yes something";
-    private final static String NO_KEY = "no key goes here";
+    protected final static String YES_KEY = "yes something";
+    protected final static String NO_KEY = "no key goes here";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             noCount = 0;
         }
 
-        // Generates widgets.
+        // References widgets.
         mQuestionLabel = (TextView) findViewById(R.id.survey_questions);
         mYesButton = (Button) findViewById(R.id.yes_button);
         mNoButton = (Button) findViewById(R.id.no_button);
@@ -62,6 +63,11 @@ public class MainActivity extends AppCompatActivity {
                 // Updates counter.
                 yesCount++;
                 updateCounters();
+
+                Intent launchResults = new Intent(MainActivity.this, ResultsActivity.class);
+                launchResults.putExtra(YES_KEY, yesCount);
+                launchResults.putExtra(NO_KEY, noCount);
+                startActivity(launchResults);
             }
         });
 
