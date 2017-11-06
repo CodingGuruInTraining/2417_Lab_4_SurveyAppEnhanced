@@ -22,6 +22,8 @@ public class ResultsActivity extends AppCompatActivity {
         // Retrieves counts from MainActivity.
         int yesCount = launchIntent.getIntExtra(MainActivity.YES_KEY, 0);
         int noCount = launchIntent.getIntExtra(MainActivity.NO_KEY, 0);
+        String option1 = launchIntent.getStringExtra(MainActivity.OPT1_KEY);
+        String option2 = launchIntent.getStringExtra(MainActivity.OPT2_KEY);
 
         // References widgets.
         TextView yesView = (TextView) findViewById(R.id.yeses);
@@ -29,12 +31,17 @@ public class ResultsActivity extends AppCompatActivity {
         Button resetBtn = (Button) findViewById(R.id.reset_button);
         Button contBtn = (Button) findViewById(R.id.continue_button);
 
-        // Updates TextViews with received counts.
-        String yesText = yesView.getText().toString();
-        yesView.setText(yesText.replace("XX", yesCount + ""));
+        if (option1 == null || option2 == null) {
+            option1 = "Yes";
+            option2 = "No";
+        }
 
-        String noText = noView.getText().toString();
-        noView.setText(noText.replace("XX", noCount + ""));
+        // Updates TextViews with received counts.
+//        String yesText = yesView.getText().toString();
+        yesView.setText("Total " + option1 + "'s: " + yesCount);
+
+//        String noText = noView.getText().toString();
+        noView.setText("Total " + option2 + "'s: " + noCount);
 
         resetBtn.setOnClickListener(new View.OnClickListener() {
             @Override

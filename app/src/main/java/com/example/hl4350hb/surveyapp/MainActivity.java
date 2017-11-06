@@ -23,10 +23,16 @@ public class MainActivity extends AppCompatActivity {
     // Initialize static variables.
     Integer yesCount;
     Integer noCount;
+    String question;
+    String option1;
+    String option2;
 
-    // Creates static keys for bundling.
+    // Creates static keys for bundling and intents.
     protected final static String YES_KEY = "yes something";
     protected final static String NO_KEY = "no key goes here";
+    protected final static String Q_KEY = "i have a question for you";
+    protected final static String OPT1_KEY = "first order of business";
+    protected final static String OPT2_KEY = "there used to be a third option";
 
 
     private static final int RESULT_REQUEST_CODE = 0;
@@ -134,12 +140,13 @@ public class MainActivity extends AppCompatActivity {
                     resetCounts();
                 }
             } else if (requestCode == SURVEY_REQUEST_CODE) {
-                String question = data.getStringExtra(SurveyActivity.EXTRA_FROM_SURVEY_QUESTION);
-                String opt1 = data.getStringExtra(SurveyActivity.EXTRA_FROM_SURVEY_OPT1);
-                String opt2 = data.getStringExtra(SurveyActivity.EXTRA_FROM_SURVEY_OPT2);
+                question = data.getStringExtra(SurveyActivity.EXTRA_FROM_SURVEY_QUESTION);
+                option1 = data.getStringExtra(SurveyActivity.EXTRA_FROM_SURVEY_OPT1);
+                option2 = data.getStringExtra(SurveyActivity.EXTRA_FROM_SURVEY_OPT2);
                 mQuestionLabel.setText(question);
-                mYesButton.setText(opt1);
-                mNoButton.setText(opt2);
+                mYesButton.setText(option1);
+                mNoButton.setText(option2);
+                resetCounts();
             }
         }
     }
@@ -148,6 +155,9 @@ public class MainActivity extends AppCompatActivity {
         Intent launchResults = new Intent(MainActivity.this, ResultsActivity.class);
         launchResults.putExtra(YES_KEY, yesCount);
         launchResults.putExtra(NO_KEY, noCount);
+//        launchResults.putExtra(Q_KEY, question);
+        launchResults.putExtra(OPT1_KEY, option1);
+        launchResults.putExtra(OPT2_KEY, option2);
         startActivityForResult(launchResults, RESULT_REQUEST_CODE);
     }
 
