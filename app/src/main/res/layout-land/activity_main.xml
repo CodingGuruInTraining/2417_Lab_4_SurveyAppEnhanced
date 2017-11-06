@@ -11,65 +11,44 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/survey_question_string"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="21dp"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/yes_textview"
-        android:layout_toStartOf="@+id/yes_textview"
-        android:layout_marginTop="35dp" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:id="@+id/yes_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
         android:text="YES"
-
-
-        android:layout_alignBaseline="@+id/no_button"
-        android:layout_alignBottom="@+id/no_button"
-        android:layout_toLeftOf="@+id/reset_button"
-        android:layout_toStartOf="@+id/reset_button" />
+        android:layout_below="@+id/survey_questions"
+        android:layout_toLeftOf="@+id/create_button"
+        android:layout_toStartOf="@+id/create_button"/>
 
     <Button
         android:id="@+id/no_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="NO"
-
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/reset_button"
-        android:layout_toEndOf="@+id/reset_button" />
-
-    <TextView
-        android:id="@+id/yes_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Yes: "
-
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_below="@+id/yes_button"
-        android:layout_alignLeft="@+id/yes_button"
-        android:layout_alignStart="@+id/yes_button"
-        android:layout_marginTop="18dp" />
-
-    <TextView
-        android:id="@+id/no_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="No: "
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_alignBaseline="@+id/yes_textview"
-        android:layout_alignBottom="@+id/yes_textview"
-        android:layout_alignLeft="@+id/no_button"
-        android:layout_alignStart="@+id/no_button" />
+        android:layout_alignBaseline="@+id/yes_button"
+        android:layout_alignBottom="@+id/yes_button"
+        android:layout_alignRight="@+id/create_button"
+        android:layout_alignEnd="@+id/create_button"/>
 
     <Button
-        android:id="@+id/reset_button"
+        android:id="@+id/create_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="RESET"
+        android:text="Create New Question"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="59dp" />
+        android:layout_marginBottom="56dp"/>
 
 </RelativeLayout>
