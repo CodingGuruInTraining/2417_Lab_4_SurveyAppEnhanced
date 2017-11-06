@@ -16,9 +16,6 @@ public class MainActivity extends AppCompatActivity {
     Button mYesButton;
     Button mNoButton;
     Button mNewButton;
-//    Button mResetButton;
-//    TextView mYesLabel;
-//    TextView mNoLabel;
 
     // Initialize static variables.
     Integer yesCount;
@@ -30,11 +27,10 @@ public class MainActivity extends AppCompatActivity {
     // Creates static keys for bundling and intents.
     protected final static String YES_KEY = "yes something";
     protected final static String NO_KEY = "no key goes here";
-    protected final static String Q_KEY = "i have a question for you";
     protected final static String OPT1_KEY = "first order of business";
     protected final static String OPT2_KEY = "there used to be a third option";
 
-
+    // Static variables for result keys.
     private static final int RESULT_REQUEST_CODE = 0;
     private static final int SURVEY_REQUEST_CODE = 1;
 
@@ -62,26 +58,14 @@ public class MainActivity extends AppCompatActivity {
         mNoButton = (Button) findViewById(R.id.no_button);
         mNewButton = (Button) findViewById(R.id.create_button);
 
-//        mResetButton = (Button) findViewById(R.id.reset_button);
-//        mYesLabel = (TextView) findViewById(R.id.yes_textview);
-//        mNoLabel = (TextView) findViewById(R.id.no_textview);
-
-//        // Runs update function.
-//        updateCounters();
-
         // Yes button event listener.
         mYesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Updates counter.
                 yesCount++;
-//                updateCounters();
-
+                // Redirects to ResultActivity.
                 sendIntent();
-//                Intent launchResults = new Intent(MainActivity.this, ResultsActivity.class);
-//                launchResults.putExtra(YES_KEY, yesCount);
-//                launchResults.putExtra(NO_KEY, noCount);
-//                startActivity(launchResults);
             }
         });
 
@@ -91,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Updates counter.
                 noCount++;
-//                updateCounters();
+                // Redirects to ResultActivity.
                 sendIntent();
             }
         });
@@ -99,69 +83,64 @@ public class MainActivity extends AppCompatActivity {
         mNewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Creates Intent for SurveyActivity.
                 Intent launchSurvey = new Intent(MainActivity.this, SurveyActivity.class);
                 startActivityForResult(launchSurvey, SURVEY_REQUEST_CODE);
             }
         });
-
-        // Reset button event listener.
-//        mResetButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // Clears variables and updates widget strings.
-//                yesCount = 0;
-//                noCount = 0;
-//                updateCounters();
-//            }
-//        });
     }
-
-    // Function to set widget labels' text to counter values.
-//    private void updateCounters() {
-//        mYesLabel.setText("Yes: " + yesCount);
-//        mNoLabel.setText("No: " + noCount);
-//    }
 
     // Bundle saver.
     @Override
     protected void onSaveInstanceState(Bundle outBundle) {
+        // Saves current counters to be loaded with Activity.
         outBundle.putInt(YES_KEY, yesCount);
         outBundle.putInt(NO_KEY, noCount);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // First checks whether a good result code was returned.
         if (resultCode == RESULT_OK) {
-            if (requestCode == RESULT_REQUEST_CODE) {
+            // Checks which request code was received and responds accordingly.
+            if (requestCode == RESULT_REQUEST_CODE) {   // ResultActivity
+                // Gets boolean from Extra that tells if to continue with current survey.
                 boolean decision = data.getBooleanExtra(ResultsActivity.EXTRA_FROM_RESULT, false);
                 if (decision) {
                     // TODO maybe do something?
                 } else {
+                    // Resets the counter variables.
                     resetCounts();
                 }
-            } else if (requestCode == SURVEY_REQUEST_CODE) {
+            } else if (requestCode == SURVEY_REQUEST_CODE) {    // SurveyActivity
+                // Retrieves string variables from Extra.
                 question = data.getStringExtra(SurveyActivity.EXTRA_FROM_SURVEY_QUESTION);
                 option1 = data.getStringExtra(SurveyActivity.EXTRA_FROM_SURVEY_OPT1);
                 option2 = data.getStringExtra(SurveyActivity.EXTRA_FROM_SURVEY_OPT2);
+                // Sets the text value of the widgets.
                 mQuestionLabel.setText(question);
                 mYesButton.setText(option1);
                 mNoButton.setText(option2);
+                // Rests counter variables since this is now a new survey.
                 resetCounts();
             }
         }
     }
 
     private void sendIntent() {
+        // Creates new Intent for ResultActivity.
         Intent launchResults = new Intent(MainActivity.this, ResultsActivity.class);
+        // Adds counters and button values to Extras.
         launchResults.putExtra(YES_KEY, yesCount);
         launchResults.putExtra(NO_KEY, noCount);
-//        launchResults.putExtra(Q_KEY, question);
         launchResults.putExtra(OPT1_KEY, option1);
         launchResults.putExtra(OPT2_KEY, option2);
+        // Launches the ResultActivity.
         startActivityForResult(launchResults, RESULT_REQUEST_CODE);
     }
 
     private void resetCounts() {
+        // Resets counters.
         yesCount = 0;
         noCount = 0;
     }

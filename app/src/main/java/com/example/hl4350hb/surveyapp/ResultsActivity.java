@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 public class ResultsActivity extends AppCompatActivity {
 
+    // Static tag for accessing returned Extra.
     public static final String EXTRA_FROM_RESULT = "here is a delicious extra";
 
     @Override
@@ -19,7 +20,7 @@ public class ResultsActivity extends AppCompatActivity {
         // Get reference to the Intent that launched this activity.
         Intent launchIntent = getIntent();
 
-        // Retrieves counts from MainActivity.
+        // Retrieves counts and button values from MainActivity.
         int yesCount = launchIntent.getIntExtra(MainActivity.YES_KEY, 0);
         int noCount = launchIntent.getIntExtra(MainActivity.NO_KEY, 0);
         String option1 = launchIntent.getStringExtra(MainActivity.OPT1_KEY);
@@ -31,35 +32,39 @@ public class ResultsActivity extends AppCompatActivity {
         Button resetBtn = (Button) findViewById(R.id.reset_button);
         Button contBtn = (Button) findViewById(R.id.continue_button);
 
+        // Uses default values if nothing was passed.
         if (option1 == null || option2 == null) {
             option1 = "Yes";
             option2 = "No";
         }
 
         // Updates TextViews with received counts.
-//        String yesText = yesView.getText().toString();
         yesView.setText("Total " + option1 + "'s: " + yesCount);
-
-//        String noText = noView.getText().toString();
         noView.setText("Total " + option2 + "'s: " + noCount);
 
+        // Reset button's click event.
         resetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Runs return Intent function.
                 returnIntent(false);
             }
         });
 
+        // Continue button's click event.
         contBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Runs return Intent function.
                 returnIntent(true);
             }
         });
     }
 
     private void returnIntent(boolean decision) {
+        // Creates new Intent for returning to MainActivity.
         Intent resultIntent = new Intent();
+        // Passes received boolean back to MainActivity.
         resultIntent.putExtra(EXTRA_FROM_RESULT, decision);
         setResult(RESULT_OK, resultIntent);
         finish();
